@@ -87,7 +87,9 @@ export function Sidebar() {
 					</SheetFooter>
 				</SheetContent>
 			</Sheet>
-			<BackToTopButton />
+			<div className="flex gap-2">
+				<BackToTopButton />
+			</div>
 		</div>
 	);
 }
