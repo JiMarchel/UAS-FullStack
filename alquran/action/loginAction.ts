@@ -22,6 +22,7 @@ export const loginAction = async (prevState: any, formData: FormData) => {
 	}
 
 	const responseData = await response.json();
-	userCookies.set("access_token", responseData.access_token)
+	const oneDay = 24 * 60 * 60 * 1000
+	userCookies.set("access_token", responseData.access_token, { maxAge: oneDay, path: "/" })
 	redirect("/bookmarks")
 }

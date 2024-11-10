@@ -1,22 +1,52 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { convertToArabicNumber } from "@/lib/convert-number-arabic";
 import Link from "next/link";
 import { BookmarkIcon, ChevronLeft } from "lucide-react";
 import { Button } from "./ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { alquranBookmark } from "@/action/alquranBookmarkAction";
+import { toast } from "sonner";
 
 interface ListAyat {
-	data: [
-		{
-			ar: string;
-			id: string;
-			tr: string;
-			nomor: string;
-		},
-	];
+	ar: string;
+	id: string;
+	tr: string;
+	nomor: string;
 }
 
-export const ListAyat = ({ data }: ListAyat) => {
+interface ListAlquranId {
+	alquran_id: number;
+	id: number;
+	user_id: number;
+}
+
+interface ListAyatProps {
+	data: ListAyat[];
+	dataBookmarks: ListAlquranId[]
+	userId: string
+}
+
+export const ListAyat = ({ data, dataBookmarks, userId }: ListAyatProps) => {
+	const pathName = usePathname()
+	const alquranId = pathName.split("/").pop()!
+	const router = useRouter()
+
+	const currentBookmark = dataBookmarks.find(v => v.alquran_id === parseInt(alquranId));
+
+	const [isBookmarked, setIsBookmarked] = useState(currentBookmark !== undefined);
+
+	const handleBookmarkToggle = async () => {
+		if (!userId) {
+			router.push("/login")
+			return
+		}
+		const toggle = await alquranBookmark(parseInt(alquranId));
+		toast.success(`${toggle.message}`);
+		setIsBookmarked(!isBookmarked);
+	};
+
 	return (
 		<div className="max-w-[400px] space-y-2 mx-auto overflow-hidden px-2 sm:max-w-[800px] ">
 			<div className="flex justify-between items-center">
@@ -28,7 +58,9 @@ export const ListAyat = ({ data }: ListAyat) => {
 					Back
 				</Link>
 
-				<Button size="icon" variant="outline"><BookmarkIcon /></Button>
+
+				<Button size="icon" variant={isBookmarked ? "default" : "outline"} onClick={handleBookmarkToggle}
+				><BookmarkIcon /></Button>
 			</div>
 			<div className="my-8">
 				<h1 className="text-center text-3xl font-bold my-16 ">

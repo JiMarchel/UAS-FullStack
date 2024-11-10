@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import React from "react";
 import { Sidebar } from "../components/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 const roboto = Roboto({
 	subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					<Sidebar />
 					{children}
+					<Toaster position="top-center" />
 				</ThemeProvider>
 			</body>
 		</html>
