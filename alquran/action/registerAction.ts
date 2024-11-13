@@ -1,7 +1,6 @@
 "use server"
 
 import { redirect } from "next/navigation"
-import { toast } from "sonner"
 
 
 export const registerAction = async (prevState: any, formData: FormData) => {
@@ -21,6 +20,5 @@ export const registerAction = async (prevState: any, formData: FormData) => {
 		return { message: errRes.message }
 	}
 
-	toast("Resgister successfully")
 	redirect("/login")
 }

@@ -28,9 +28,9 @@ const BookMarks = async () => {
 	let doaRes = []
 
 	if (userId) {
-		const alquranReq = await fetch(`http://localhost:5000/alquran-bookmarks/${userId}`)
+		const alquranReq = await fetch(`http://localhost:5000/alquran-bookmarks/${userId}`, { next: { revalidate: 0 } })
 		alquranRes = await alquranReq.json()
-		const doaReq = await fetch(`http://localhost:5000/doa-bookmarks/${userId}`)
+		const doaReq = await fetch(`http://localhost:5000/doa-bookmarks/${userId}`, { next: { revalidate: 0 } })
 		doaRes = await doaReq.json()
 	} else {
 		redirect("/login")
